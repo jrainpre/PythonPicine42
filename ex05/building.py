@@ -1,88 +1,63 @@
-# This time you have to make a real autonomous program, with a main, which takes
-# a single string argument and displays the sums of its upper-case characters, lower-case
-# characters, punctuation characters, digits and spaces.
-# • If None or nothing is provided, the user is prompted to provide a string.
-# • If more than one argument is provided to the program, print an AssertionError.
-# Expected outputs:
-# $>python building.py "Python 3.0, released in 2008, was a major revision that is not completely backwardcompatible with earlier versions. Python 2 was discontinued with version 2.7.18 in 2020."
-# The text contains 171 characters:
-# 2 upper letters
-# 121 lower letters
-# 8 punctuation marks
-# 25 spaces
-# 15 digits
-# $>
-# Expected outputs: (the carriage return counts as a space, if you don’t want to return
-# one use ctrl + D)
-# $>python building.py
-# What is the text to count?
-# Hello World!
-# The text contains 13 characters:
-# 2 upper letters
-# 8 lower letters
-# 1 punctuation marks
-# 2 spaces
-# 0 digits
-# $>
+import sys
 
 
-def count_uppercase(input_str) -> int:
-    """Count the number of uppercase characters in a string"""
-    return len([c for c in input_str if c.isupper()])
+def count_punctuation(text) -> int:
+    """Count the number of punctuation marks in the text"""
+    punctuation_str = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+    return len([char for char in text if char in punctuation_str])
 
 
-def count_lowercase(input_str) -> int:
-    """Count the number of lowercase characters in a string"""
-    return len([c for c in input_str if c.islower()])
+def count_spaces(text) -> int:
+    """Count the number of spaces in the text"""
+    return len([char for char in text if char.isspace()])
 
 
-def count_punctuation(input_str) -> int:
-    """Count the number of punctuation characters in a string"""
-    string_punctuation = '''!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~'''
-    return len([c for c in input_str if c in string_punctuation])
+def count_digits(text) -> int:
+    """Count the number of digits in the text"""
+    print(count_digits.__doc__)
+    return len([char for char in text if char.isdigit()])
 
 
-def count_spaces(input_str) -> int:
-    """Count the number of spaces in a string"""
-    return len([c for c in input_str if c.isspace()])
+def count_upper(text) -> int:
+    """Count the number of upper case letters in the text"""
+    return len([char for char in text if char.isupper()])
 
 
-def count_digits(input_str) -> int:
-    """Count the number of digits in a string"""
-    return len([c for c in input_str if c.isdigit()])
+def count_lower(text) -> int:
+    """Count the number of lower case letters in the text"""
+    return len([char for char in text if char.islower()])
+
+
+def print_counts(text):
+    """Print the counts of the different char types in the text"""
+    print(f"The text contains {len(text)} characters:")
+    print(f"{count_upper(text)} upper letters")
+    print(f"{count_lower(text)} lower letters")
+    print(f"{count_punctuation(text)} punctuation marks")
+    print(f"{count_spaces(text)} spaces")
+    print(f"{count_digits(text)} digits")
 
 
 def main():
-    """Main function, takes a single string argument
-      and displays the sums of its upper-case characters,
-        lower-case, punctuation, digits and spaces."""
-    import sys
-
-    arg_error = "more than one argument is provided"
-    argv = sys.argv
-    argc = len(argv) - 1
-
-    input_str = ''
-    if argc == 0:
-        try:
-            print("What is the text to count?")
-            input_str = input()
-        except EOFError:
-            pass
-    else:
-        input_str = argv[1]
+    """main function
+        1. checks if there is an argument
+        2. takes input if there is no argument
+        3. checks if there is more than one argument
+        4. prints the counts of the different char types in the text"""
     try:
-        assert argc < 2, arg_error
+        argc = len(sys.argv)
+        if argc < 2:
+            try:
+                s = input("What is the text to count?\n")
+                s += "\n"
+            except EOFError:
+                pass
+        elif argc == 2:
+            s = sys.argv[1]
+        assert argc < 3, "more than one argument is provided"
+        print_counts(s)
     except AssertionError as error:
-        print(f"AssertionError: {error}")
-        sys.exit(1)
-
-    print(f"The text contains {len(input_str)} characters:")
-    print(count_uppercase(input_str), "upper letters")
-    print(count_lowercase(input_str), "lower letters")
-    print(count_punctuation(input_str), "punctuation marks")
-    print(count_spaces(input_str), "spaces")
-    print(count_digits(input_str), "digits")
+        print(AssertionError.__name__ + ":", error)
 
 
 if __name__ == "__main__":

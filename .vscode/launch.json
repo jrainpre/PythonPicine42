@@ -11,7 +11,7 @@
 			"request": "launch",
 			"program": "${file}",
 			"console": "integratedTerminal",
-			"args": ["1"]
+			"args": ["h$llo"]
 			
 		}
 	]
